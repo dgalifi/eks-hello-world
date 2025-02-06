@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-app
+  labels:
+    app: client-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-app
+  template:
+    metadata:
+      labels:
+        app: client-app
+    spec:
+      containers:
+      - name: client-app
+        image: davidegalifi/quick-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: Hello from client
+        - name: UPSTREAM_URI
+          value: http://quick-app-service:10002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+spec:
+  selector:
+    app: client-app
+  ports:
+    - protocol: TCP
+      port: 10001
+      targetPort: 8080
