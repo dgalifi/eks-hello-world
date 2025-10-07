@@ -9,13 +9,14 @@
 ## Create the EKS Cluster using eksctl
 ```
 eksctl create cluster \
-    --name test-cluster \
+    --name eks-test-cluster \
     --version 1.32 \
     --region eu-west-1 \
     --node-type t2.micro \
     --nodes 5
 
 ```
+leave the number of nodes value set to 5
 
 ##  Ingress controller
 deploy the ingress controller using helm
@@ -64,4 +65,31 @@ stay frosty!
 ## Delete the cluster when done
 ```
 eksctl delete cluster --region=eu-west-1 --name=test-cluster
+```
+
+## Useful commands
+```
+kubectl get nodes
+kubectls get pods
+kubectl get all
+kubectl get ingress-controller
+kubectl get svc
+kubectl get deployments
+```
+
+set namespace with 
+
+```--namespace <_namespace_>  option```
+
+
+### if you want to scale up the number of nodes you need to 
+- grab the nodegroup name with
+```
+eksctl get nodegroup --cluster eks-test-cluster --region eu-west-1
+```
+
+then run 
+
+```
+eksctl scale nodegroup --cluster eks-test-cluster --name <node_group_name> --nodes 8 --nodes-max 10  --region eu-west-1
 ```
